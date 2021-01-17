@@ -72,8 +72,7 @@
                         }
                     },
                     "required": [
-                        "choices",
-                        "timeout"
+                        "choices"
                     ],
                     "description": "A map of choices that the player can make. Each choice must map to a passage name."
                 },
