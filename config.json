@@ -25,6 +25,21 @@
             },
             "description": "A mapping of characters that will appear in the story."
         },
+        "cmds": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": [
+                        "number",
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "description": "A command."
+            },
+            "description": "A mapping of commands to their default parameters."
+        },
         "state": {
             "type": "object",
             "additionalProperties": {
