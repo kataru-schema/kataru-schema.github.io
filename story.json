@@ -34,6 +34,30 @@
                 {
                     "type": "object",
                     "properties": {
+                        "cmd": {
+                            "type": "string",
+                            "description": "Command to be called."
+                        },
+                        "params": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": [
+                                    "number",
+                                    "boolean",
+                                    "string"
+                                ],
+                                "description": "A choice option, mapping to a passage name."
+                            }
+                        }
+                    },
+                    "required": [
+                        "cmd"
+                    ],
+                    "description": "A set command to set a variable to the given value."
+                },
+                {
+                    "type": "object",
+                    "properties": {
                         "choices": {
                             "type": "object",
                             "additionalProperties": {
@@ -41,10 +65,15 @@
                                 "description": "A choice option, mapping to a passage name."
                             },
                             "description": "Map of dialogue choices to the passages they lead to."
+                        },
+                        "timeout": {
+                            "type": "number",
+                            "description": "Timeout time in seconds for making this choice."
                         }
                     },
                     "required": [
-                        "choices"
+                        "choices",
+                        "timeout"
                     ],
                     "description": "A map of choices that the player can make. Each choice must map to a passage name."
                 },
