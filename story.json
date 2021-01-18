@@ -60,6 +60,15 @@
                     "properties": {
                         "choices": {
                             "type": "object",
+                            "properties": {
+                                "...": {
+                                    "type": "string",
+                                    "description": "The default option. This will be automatically be entered on timeout."
+                                }
+                            },
+                            "required": [
+                                "..."
+                            ],
                             "additionalProperties": {
                                 "type": "string",
                                 "description": "A choice option, mapping to a passage name."
