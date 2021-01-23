@@ -112,7 +112,10 @@
                                 "..."
                             ],
                             "additionalProperties": {
-                                "type": "string",
+                                "type": [
+                                    "string",
+                                    "object"
+                                ],
                                 "description": "Choice: a choice mapping to a passage name."
                             },
                             "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
