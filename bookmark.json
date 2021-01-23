@@ -22,13 +22,6 @@
             "additionalProperties": {
                 "type": "object"
             }
-        },
-        "visits": {
-            "description": "Visits: a mapping of passages to their number of times visited",
-            "type": "object",
-            "additionalProperties": {
-                "type": "number"
-            }
         }
     },
     "additionalProperties": false
