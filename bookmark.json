@@ -9,7 +9,7 @@
             "type": "number"
         },
         "passage": {
-            "description": "Passage: he current passage name.",
+            "description": "Passage: the current passage name.",
             "type": "string"
         },
         "namespace": {

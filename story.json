@@ -48,14 +48,7 @@
                 },
                 "state": {
                     "description": "State: a mapping of variable names to their current values.",
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": [
-                            "number",
-                            "string",
-                            "boolean"
-                        ]
-                    }
+                    "type": "object"
                 }
             },
             "additionalProperties": false
