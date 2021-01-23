@@ -2,99 +2,92 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Kataru Story",
     "description": "YAML schema for Kataru story file.",
-    "type": "object",
-    "additionalProperties": {
-        "type": "array",
-        "items": {
-            "$ref": "#/definitions/line"
-        },
-        "description": "A passage of dialogue containing an array of lines."
-    },
-    "definitions": {
-        "line": {
-            "description": "A dialogue line.",
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "A dialogue line."
+    "oneOf": [
+        {
+            "description": "Config: Namespace-level configurations.",
+            "type": "object",
+            "properties": {
+                "namespace": {
+                    "type": "string"
                 },
-                {
+                "characters": {
+                    "description": "Characters: a mapping of characters to their associated properties that will appear in the story.",
                     "type": "object",
-                    "properties": {
-                        "set": {
-                            "type": "object",
-                            "description": "Set command to set a variable."
-                        }
-                    },
-                    "required": [
-                        "set"
-                    ],
-                    "description": "A set command to set a variable to the given value."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "cmd": {
-                            "type": "string",
-                            "description": "Command to be called."
-                        },
-                        "params": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": [
-                                    "number",
-                                    "boolean",
-                                    "string"
-                                ],
-                                "description": "A choice option, mapping to a passage name."
-                            }
-                        }
-                    },
-                    "required": [
-                        "cmd"
-                    ],
-                    "description": "A set command to set a variable to the given value."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "choices": {
-                            "type": "object",
-                            "properties": {
-                                "...": {
-                                    "type": "string",
-                                    "description": "The default option. This will be automatically be entered on timeout."
-                                }
-                            },
-                            "required": [
-                                "..."
-                            ],
-                            "additionalProperties": {
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
                                 "type": "string",
-                                "description": "A choice option, mapping to a passage name."
-                            },
-                            "description": "Map of dialogue choices to the passages they lead to."
+                                "description": "Description: the description of the character."
+                            }
                         },
-                        "timeout": {
-                            "type": "number",
-                            "description": "Timeout time in seconds for making this choice."
-                        }
-                    },
-                    "required": [
-                        "choices"
-                    ],
-                    "description": "A map of choices that the player can make. Each choice must map to a passage name."
-                },
-                {
-                    "type": "object",
-                    "patternProperties": {
-                        "^(?!if ).+": {
-                            "type": "string",
-                            "description": "A line of dialogue. The key must be a character name."
-                        }
+                        "required": [
+                            "description"
+                        ],
+                        "description": "Character: a character name."
                     }
                 },
+                "cmds": {
+                    "description": "Cmds: a mapping of commands to their default parameters.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "additionalProperties": {
+                            "description": "Param: a parameter for this commmand.",
+                            "type": [
+                                "number",
+                                "string",
+                                "boolean"
+                            ]
+                        },
+                        "description": "Cmd: a command name and its associated parameters."
+                    }
+                },
+                "state": {
+                    "description": "State: a mapping of variable names to their current values.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": [
+                            "number",
+                            "string",
+                            "boolean"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "characters",
+                "state"
+            ],
+            "additionalProperties": false
+        },
+        {
+            "description": "Passages: a map of passage names to its corresponding array of lines.",
+            "type": [
+                "object"
+            ],
+            "additionalProperties": {
+                "description": "Passage: a passage of dialogue containing an array of lines.",
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/line"
+                }
+            }
+        },
+        {
+            "description": "Empty: an empty Kataru file.",
+            "type": "null"
+        }
+    ],
+    "definitions": {
+        "line": {
+            "description": "Line: A line in the Kataru Story.",
+            "oneOf": [
                 {
+                    "description": "Conditional",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
@@ -113,6 +106,90 @@
                             "description": "The `else` block following an if statement."
                         }
                     }
+                },
+                {
+                    "description": "Choices",
+                    "type": "object",
+                    "properties": {
+                        "choices": {
+                            "type": "object",
+                            "properties": {
+                                "...": {
+                                    "type": "string",
+                                    "description": "The default option. This will be automatically be entered on timeout."
+                                }
+                            },
+                            "required": [
+                                "..."
+                            ],
+                            "additionalProperties": {
+                                "type": "string",
+                                "description": "Choice: a choice mapping to a passage name."
+                            },
+                            "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
+                        },
+                        "timeout": {
+                            "type": "number",
+                            "description": "Timeout: timeout duration in seconds for making this choice."
+                        }
+                    },
+                    "required": [
+                        "choices"
+                    ]
+                },
+                {
+                    "description": "SetCmd: A set command to set a variable to the given value.",
+                    "type": "object",
+                    "properties": {
+                        "set": {
+                            "type": "object",
+                            "description": "Set command to set a variable."
+                        }
+                    },
+                    "required": [
+                        "set"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "description": "Cmd",
+                    "type": "object",
+                    "properties": {
+                        "cmd": {
+                            "type": "string",
+                            "description": "Cmd: a command to be called in the client."
+                        },
+                        "params": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": [
+                                    "number",
+                                    "boolean",
+                                    "string"
+                                ],
+                                "description": "Params: parameters for the command."
+                            }
+                        }
+                    },
+                    "required": [
+                        "cmd"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "description": "Dialogue",
+                    "type": "object",
+                    "patternProperties": {
+                        "^(?!if |cmd$).+": {
+                            "type": "string",
+                            "description": "Dialogue: A line of dialogue. The key must be a character name."
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "description": "Text: A line of text.",
+                    "type": "string"
                 }
             ]
         }

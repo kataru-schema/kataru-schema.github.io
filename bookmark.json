@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Kataru Bookmark",
+    "description": "YAML schema for Kataru bookmark file.",
+    "type": "object",
+    "properties": {
+        "line": {
+            "description": "Line: the current line number.",
+            "type": "number"
+        },
+        "passage": {
+            "description": "Passage: he current passage name.",
+            "type": "string"
+        },
+        "namespace": {
+            "description": "Namespace: current namespace name.",
+            "type": "string"
+        },
+        "state": {
+            "description": "State: a mapping of variable names to their current values.",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object"
+            }
+        },
+        "visits": {
+            "description": "Visits: a mapping of passages to their number of times visited",
+            "type": "object",
+            "additionalProperties": {
+                "type": "number"
+            }
+        }
+    },
+    "additionalProperties": false
+}
