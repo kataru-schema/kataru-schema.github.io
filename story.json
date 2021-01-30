@@ -144,29 +144,24 @@
                     "additionalProperties": false
                 },
                 {
-                    "description": "Cmd",
-                    "type": "object",
-                    "properties": {
-                        "cmd": {
-                            "type": "string",
-                            "description": "Cmd: a command to be called in the client."
-                        },
-                        "params": {
+                    "description": "Cmds",
+                    "type": "array",
+                    "items": {
+                        "description": "Cmd",
+                        "type": "object",
+                        "additionalProperties": {
+                            "description": "Command: A command to be run by the client. Pass parameters via {}.",
                             "type": "object",
                             "additionalProperties": {
+                                "description": "Parameter: A parameter for the command.",
                                 "type": [
-                                    "number",
                                     "boolean",
+                                    "number",
                                     "string"
-                                ],
-                                "description": "Params: parameters for the command."
+                                ]
                             }
                         }
-                    },
-                    "required": [
-                        "cmd"
-                    ],
-                    "additionalProperties": false
+                    }
                 },
                 {
                     "description": "Dialogue",
