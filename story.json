@@ -130,6 +130,39 @@
                     ]
                 },
                 {
+                    "description": "Goto",
+                    "type": "object",
+                    "properties": {
+                        "goto": {
+                            "type": "string",
+                            "description": "Goto: a command to go to a given passage."
+                        }
+                    },
+                    "required": [
+                        "goto"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "description": "InputCmd",
+                    "type": "object",
+                    "properties": {
+                        "input": {
+                            "type": "object",
+                            "description": "InputCmd: An input with a prompt.",
+                            "additionalProperties": {
+                                "type": "string",
+                                "description": "Variable name mapping to the prompt for this input."
+                            },
+                            "maxProperties": 1
+                        }
+                    },
+                    "required": [
+                        "input"
+                    ],
+                    "additionalProperties": false
+                },
+                {
                     "description": "SetCmd: A set command to set a variable to the given value.",
                     "type": "object",
                     "properties": {
@@ -144,13 +177,13 @@
                     "additionalProperties": false
                 },
                 {
-                    "description": "Cmds",
+                    "description": "Cmds: Context for running commands.",
                     "type": "array",
                     "items": {
                         "description": "Cmd",
                         "type": "object",
                         "additionalProperties": {
-                            "description": "Command: A command to be run by the client. Pass parameters via {}.",
+                            "description": "Cmd: A command to be run by the client. Pass parameters via {}.",
                             "type": "object",
                             "additionalProperties": {
                                 "description": "Parameter: A parameter for the command.",
@@ -167,7 +200,7 @@
                     "description": "Dialogue",
                     "type": "object",
                     "patternProperties": {
-                        "^(?!if |cmd$).+": {
+                        "^(?!if |cmd$|goto$).+": {
                             "type": "string",
                             "description": "Dialogue: A line of dialogue. The key must be a character name."
                         }
