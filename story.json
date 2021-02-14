@@ -80,12 +80,12 @@
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
-                        "^if [a-zA-Z0-9]* (>|>=|<|<=|==)* [a-zA-Z0-9]*": {
+                        "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/line"
                             },
-                            "description": "An `if` statement. Expected to be of the form `if VAR COMPARATOR VALUE:`."
+                            "description": "An `if` statement. Expected to be of the form `if VAR COMPARATOR VALUE:` or `if [not] VAR`."
                         },
                         "^else": {
                             "type": "array",
@@ -111,11 +111,18 @@
                             "required": [
                                 "..."
                             ],
+                            "patternProperties": {
+                                "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string",
+                                        "description": "Choice: a choice mapping to a passage name."
+                                    },
+                                    "description": "Conditional choice: A choice available only if a condition is met."
+                                }
+                            },
                             "additionalProperties": {
-                                "type": [
-                                    "string",
-                                    "object"
-                                ],
+                                "type": "string",
                                 "description": "Choice: a choice mapping to a passage name."
                             },
                             "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
