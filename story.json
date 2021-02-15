@@ -27,8 +27,8 @@
                         "description": "Character: a character name."
                     }
                 },
-                "cmds": {
-                    "description": "Cmds: a mapping of commands to their default parameters.",
+                "commands": {
+                    "description": "Commands: a mapping of commands to their default parameters.",
                     "type": "object",
                     "additionalProperties": {
                         "type": [
@@ -48,6 +48,10 @@
                 },
                 "state": {
                     "description": "State: a mapping of variable names to their current values.",
+                    "type": "object"
+                },
+                "attributes": {
+                    "description": "Attributes: a mapping of attributes to optional descriptions.",
                     "type": "object"
                 }
             },
@@ -184,13 +188,13 @@
                     "additionalProperties": false
                 },
                 {
-                    "description": "Cmds: Context for running commands.",
+                    "description": "Commands: Context for running commands.",
                     "type": "array",
                     "items": {
-                        "description": "Cmd",
+                        "description": "Command",
                         "type": "object",
                         "additionalProperties": {
-                            "description": "Cmd: A command to be run by the client. Pass parameters via {}.",
+                            "description": "Command: A command to be run by the client. Pass parameters via {}.",
                             "type": "object",
                             "additionalProperties": {
                                 "description": "Parameter: A parameter for the command.",
