@@ -14,16 +14,16 @@
                     "description": "Characters: a mapping of characters to their associated properties that will appear in the story.",
                     "type": "object",
                     "additionalProperties": {
-                        "type": "object",
+                        "type": [
+                            "object",
+                            "null"
+                        ],
                         "properties": {
                             "description": {
                                 "type": "string",
                                 "description": "Description: the description of the character."
                             }
                         },
-                        "required": [
-                            "description"
-                        ],
                         "description": "Character: a character name."
                     }
                 },
@@ -108,13 +108,13 @@
                             "type": "object",
                             "properties": {
                                 "...": {
-                                    "type": "string",
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
                                     "description": "The default option. This will be automatically be entered on timeout."
                                 }
                             },
-                            "required": [
-                                "..."
-                            ],
                             "patternProperties": {
                                 "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
                                     "type": "object",
@@ -126,8 +126,11 @@
                                 }
                             },
                             "additionalProperties": {
-                                "type": "string",
-                                "description": "Choice: a choice mapping to a passage name."
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "description": "Choice: a choice mapping to a passage name. If null, takes the next passage."
                             },
                             "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
                         },
@@ -151,6 +154,34 @@
                     },
                     "required": [
                         "goto"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "description": "Call",
+                    "type": "object",
+                    "properties": {
+                        "call": {
+                            "type": "string",
+                            "description": "Call: a command to go to a given passage then return here."
+                        }
+                    },
+                    "required": [
+                        "call"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "description": "Return",
+                    "type": "object",
+                    "properties": {
+                        "return": {
+                            "type": "null",
+                            "description": "Return: a command to return to the caller position."
+                        }
+                    },
+                    "required": [
+                        "return"
                     ],
                     "additionalProperties": false
                 },
@@ -211,7 +242,7 @@
                     "description": "Dialogue",
                     "type": "object",
                     "patternProperties": {
-                        "^(?!if |cmd$|goto$).+": {
+                        "^(?!if |goto$|call$|return$).+": {
                             "type": "string",
                             "description": "Dialogue: A line of dialogue. The key must be a character name."
                         }
