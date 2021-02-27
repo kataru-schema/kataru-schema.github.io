@@ -4,25 +4,47 @@
     "description": "YAML schema for Kataru bookmark file.",
     "type": "object",
     "properties": {
-        "line": {
-            "description": "Line: the current line number.",
-            "type": "number"
+        "position": {
+            "$ref": "#/definitions/position"
         },
-        "passage": {
-            "description": "Passage: the current passage name.",
-            "type": "string"
-        },
-        "namespace": {
-            "description": "Namespace: current namespace name.",
-            "type": "string"
+        "stack": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/position"
+            }
         },
         "state": {
             "description": "State: a mapping of variable names to their current values.",
             "type": "object",
+            "properties": {
+                "global": {
+                    "description": "The global namespace, accessible from all other namespaces."
+                }
+            },
             "additionalProperties": {
                 "type": "object"
             }
         }
     },
-    "additionalProperties": false
+    "additionalProperties": false,
+    "definitions": {
+        "position": {
+            "description": "The current position in the story.",
+            "type": "object",
+            "properties": {
+                "line": {
+                    "description": "Line: the current line number.",
+                    "type": "number"
+                },
+                "passage": {
+                    "description": "Passage: the current passage name.",
+                    "type": "string"
+                },
+                "namespace": {
+                    "description": "Namespace: current namespace name.",
+                    "type": "string"
+                }
+            }
+        }
+    }
 }
