@@ -53,6 +53,10 @@
                 "attributes": {
                     "description": "Attributes: a mapping of attributes to optional descriptions.",
                     "type": "object"
+                },
+                "onPassage": {
+                    "description": "OnPassage: sets variables upon entering a passage.",
+                    "$ref": "#/definitions/setCommand"
                 }
             },
             "additionalProperties": false
@@ -76,182 +80,195 @@
         }
     ],
     "definitions": {
+        "conditional": {
+            "description": "Conditional",
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+                "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/line"
+                    },
+                    "description": "An `if` statement. Expected to be of the form `if VAR COMPARATOR VALUE:` or `if [not] VAR`."
+                },
+                "^else": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/line"
+                    },
+                    "description": "The `else` block following an if statement."
+                }
+            }
+        },
+        "choices": {
+            "description": "Choices",
+            "type": "object",
+            "properties": {
+                "choices": {
+                    "type": "object",
+                    "properties": {
+                        "...": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "description": "The default option. This will be automatically be entered on timeout."
+                        }
+                    },
+                    "patternProperties": {
+                        "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "description": "Choice: a choice mapping to a passage name."
+                            },
+                            "description": "Conditional choice: A choice available only if a condition is met."
+                        }
+                    },
+                    "additionalProperties": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Choice: a choice mapping to a passage name. If null, takes the next passage."
+                    },
+                    "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
+                },
+                "timeout": {
+                    "type": "number",
+                    "description": "Timeout: timeout duration in seconds for making this choice."
+                }
+            },
+            "required": [
+                "choices"
+            ]
+        },
+        "call": {
+            "description": "Call",
+            "type": "object",
+            "properties": {
+                "call": {
+                    "type": "string",
+                    "description": "Call: a command to go to a given passage then return here."
+                }
+            },
+            "required": [
+                "call"
+            ],
+            "additionalProperties": false
+        },
+        "return": {
+            "description": "Return",
+            "type": "object",
+            "properties": {
+                "return": {
+                    "type": "null",
+                    "description": "Return: a command to return to the caller position."
+                }
+            },
+            "required": [
+                "return"
+            ],
+            "additionalProperties": false
+        },
+        "inputCommand": {
+            "description": "InputCmd",
+            "type": "object",
+            "properties": {
+                "input": {
+                    "type": "object",
+                    "description": "InputCmd: An input with a prompt.",
+                    "additionalProperties": {
+                        "type": "string",
+                        "description": "Variable name mapping to the prompt for this input."
+                    },
+                    "maxProperties": 1
+                }
+            },
+            "required": [
+                "input"
+            ],
+            "additionalProperties": false
+        },
+        "setCommand": {
+            "description": "SetCmd: A set command to set a variable to the given value.",
+            "type": "object",
+            "properties": {
+                "set": {
+                    "type": "object",
+                    "description": "Set command to set a variable."
+                }
+            },
+            "required": [
+                "set"
+            ],
+            "additionalProperties": false
+        },
+        "commands": {
+            "description": "Commands: Context for running commands.",
+            "type": "array",
+            "items": {
+                "description": "Command",
+                "type": "object",
+                "additionalProperties": {
+                    "description": "Command: A command to be run by the client. Pass parameters via {}.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "description": "Parameter: A parameter for the command.",
+                        "type": [
+                            "boolean",
+                            "number",
+                            "string"
+                        ]
+                    }
+                }
+            }
+        },
+        "dialogue": {
+            "description": "Dialogue",
+            "type": "object",
+            "patternProperties": {
+                "^(?!if |goto$|call$|return$).+": {
+                    "type": "string",
+                    "description": "Dialogue: A line of dialogue. The key must be a character name."
+                }
+            },
+            "additionalProperties": false
+        },
+        "text": {
+            "description": "Text: A line of text.",
+            "type": "string"
+        },
         "line": {
             "description": "Line: A line in the Kataru Story.",
             "oneOf": [
                 {
-                    "description": "Conditional",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "patternProperties": {
-                        "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/line"
-                            },
-                            "description": "An `if` statement. Expected to be of the form `if VAR COMPARATOR VALUE:` or `if [not] VAR`."
-                        },
-                        "^else": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/line"
-                            },
-                            "description": "The `else` block following an if statement."
-                        }
-                    }
+                    "$ref": "#/definitions/conditional"
                 },
                 {
-                    "description": "Choices",
-                    "type": "object",
-                    "properties": {
-                        "choices": {
-                            "type": "object",
-                            "properties": {
-                                "...": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "description": "The default option. This will be automatically be entered on timeout."
-                                }
-                            },
-                            "patternProperties": {
-                                "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "string",
-                                        "description": "Choice: a choice mapping to a passage name."
-                                    },
-                                    "description": "Conditional choice: A choice available only if a condition is met."
-                                }
-                            },
-                            "additionalProperties": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Choice: a choice mapping to a passage name. If null, takes the next passage."
-                            },
-                            "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
-                        },
-                        "timeout": {
-                            "type": "number",
-                            "description": "Timeout: timeout duration in seconds for making this choice."
-                        }
-                    },
-                    "required": [
-                        "choices"
-                    ]
+                    "$ref": "#/definitions/choices"
                 },
                 {
-                    "description": "Goto",
-                    "type": "object",
-                    "properties": {
-                        "goto": {
-                            "type": "string",
-                            "description": "Goto: a command to go to a given passage."
-                        }
-                    },
-                    "required": [
-                        "goto"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/call"
                 },
                 {
-                    "description": "Call",
-                    "type": "object",
-                    "properties": {
-                        "call": {
-                            "type": "string",
-                            "description": "Call: a command to go to a given passage then return here."
-                        }
-                    },
-                    "required": [
-                        "call"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/return"
                 },
                 {
-                    "description": "Return",
-                    "type": "object",
-                    "properties": {
-                        "return": {
-                            "type": "null",
-                            "description": "Return: a command to return to the caller position."
-                        }
-                    },
-                    "required": [
-                        "return"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/inputCommand"
                 },
                 {
-                    "description": "InputCmd",
-                    "type": "object",
-                    "properties": {
-                        "input": {
-                            "type": "object",
-                            "description": "InputCmd: An input with a prompt.",
-                            "additionalProperties": {
-                                "type": "string",
-                                "description": "Variable name mapping to the prompt for this input."
-                            },
-                            "maxProperties": 1
-                        }
-                    },
-                    "required": [
-                        "input"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/setCommand"
                 },
                 {
-                    "description": "SetCmd: A set command to set a variable to the given value.",
-                    "type": "object",
-                    "properties": {
-                        "set": {
-                            "type": "object",
-                            "description": "Set command to set a variable."
-                        }
-                    },
-                    "required": [
-                        "set"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/definitions/commands"
                 },
                 {
-                    "description": "Commands: Context for running commands.",
-                    "type": "array",
-                    "items": {
-                        "description": "Command",
-                        "type": "object",
-                        "additionalProperties": {
-                            "description": "Command: A command to be run by the client. Pass parameters via {}.",
-                            "type": "object",
-                            "additionalProperties": {
-                                "description": "Parameter: A parameter for the command.",
-                                "type": [
-                                    "boolean",
-                                    "number",
-                                    "string"
-                                ]
-                            }
-                        }
-                    }
+                    "$ref": "#/definitions/dialogue"
                 },
                 {
-                    "description": "Dialogue",
-                    "type": "object",
-                    "patternProperties": {
-                        "^(?!if |goto$|call$|return$).+": {
-                            "type": "string",
-                            "description": "Dialogue: A line of dialogue. The key must be a character name."
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                {
-                    "description": "Text: A line of text.",
-                    "type": "string"
+                    "$ref": "#/definitions/text"
                 }
             ]
         }
