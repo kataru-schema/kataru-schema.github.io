@@ -85,7 +85,7 @@
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
-                "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
+                "^if (?:not )?\\$[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/line"
@@ -117,7 +117,7 @@
                         }
                     },
                     "patternProperties": {
-                        "^if (?:not )?[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
+                        "^if (?:not )?\\$[a-zA-Z0-9\\.]*(?: (?:>|>=|<|<=|==) [a-zA-Z0-9]*)?$": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "string",
