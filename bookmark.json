@@ -13,6 +13,15 @@
                 "$ref": "#/definitions/position"
             }
         },
+        "snapshots": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/position"
+                }
+            }
+        },
         "state": {
             "description": "State: a mapping of variable names to their current values.",
             "type": "object",
