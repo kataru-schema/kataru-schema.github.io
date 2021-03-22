@@ -205,13 +205,11 @@
             ],
             "additionalProperties": false
         },
-        "commands": {
-            "description": "Commands: Context for running commands.",
-            "type": "array",
-            "items": {
-                "description": "Command",
-                "type": "object",
-                "additionalProperties": {
+        "command": {
+            "description": "Command",
+            "type": "object",
+            "patternProperties": {
+                "^(?!set$|choices$).+": {
                     "description": "Command: A command to be run by the client. Pass parameters via {}.",
                     "type": "object",
                     "additionalProperties": {
@@ -219,11 +217,13 @@
                         "type": [
                             "boolean",
                             "number",
-                            "string"
+                            "string",
+                            "null"
                         ]
                     }
                 }
-            }
+            },
+            "additionalProperties": false
         },
         "dialogue": {
             "description": "Dialogue",
@@ -262,7 +262,7 @@
                     "$ref": "#/definitions/setCommand"
                 },
                 {
-                    "$ref": "#/definitions/commands"
+                    "$ref": "#/definitions/command"
                 },
                 {
                     "$ref": "#/definitions/dialogue"
