@@ -85,7 +85,7 @@
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
-                "^(?:el)?if \\$.+": {
+                "^(?:el)?if .+": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/line"
@@ -117,7 +117,7 @@
                         }
                     },
                     "patternProperties": {
-                        "^(?:el)?if \\$.+": {
+                        "^(?:el)?if .+": {
                             "type": "object",
                             "additionalProperties": {
                                 "type": "string",
