@@ -219,14 +219,24 @@
             "patternProperties": {
                 "^(?!set$|choices$).+": {
                     "description": "Command: A command to be run by the client. Pass parameters via {}.",
-                    "type": "object",
+                    "type": [
+                        "object",
+                        "array"
+                    ],
                     "additionalProperties": {
                         "description": "Parameter: A parameter for the command.",
                         "type": [
                             "boolean",
                             "number",
-                            "string",
-                            "null"
+                            "string"
+                        ]
+                    },
+                    "items": {
+                        "description": "Parameter: A parameter for the command.",
+                        "type": [
+                            "boolean",
+                            "number",
+                            "string"
                         ]
                     }
                 }
