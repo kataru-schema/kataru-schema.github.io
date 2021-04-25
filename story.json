@@ -200,12 +200,23 @@
             "additionalProperties": false
         },
         "setCommand": {
-            "description": "SetCmd: A set command to set a variable to the given value.",
+            "description": "SetCommand: A set command to set a variable to the given value.",
             "type": "object",
             "properties": {
                 "set": {
                     "type": "object",
-                    "description": "Set command to set a variable."
+                    "description": "Set command to set a variable.",
+                    "patternProperties": {
+                        "^\\$.+": {
+                            "description": "Setting a variable.",
+                            "type": [
+                                "number",
+                                "string",
+                                "boolean"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
                 }
             },
             "required": [
