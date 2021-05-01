@@ -62,8 +62,12 @@
                     "description": "Attributes: a mapping of attributes to optional descriptions.",
                     "type": "object"
                 },
-                "onPassage": {
-                    "description": "OnPassage: sets variables upon entering a passage.",
+                "onEnter": {
+                    "description": "OnEnter: sets variables upon entering a passage.",
+                    "$ref": "#/definitions/setCommand"
+                },
+                "onExit": {
+                    "description": "OnExit: sets variables upon exiting a passage.",
                     "$ref": "#/definitions/setCommand"
                 }
             },
