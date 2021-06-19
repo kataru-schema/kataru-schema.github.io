@@ -232,7 +232,7 @@
             "description": "Command",
             "type": "object",
             "patternProperties": {
-                "^(?!set$|choices$).+": {
+                "^(?!set$|choices$|if\\s|elif\\s|else$).+": {
                     "description": "Command: A command to be run by the client. Pass parameters via {}.",
                     "type": [
                         "object",
@@ -262,7 +262,7 @@
             "description": "Dialogue",
             "type": "object",
             "patternProperties": {
-                "^(?!if |elif |goto$|call$|return$).+": {
+                "^(?!if\\s|elif\\s|goto$|call$|return$).+": {
                     "type": "string",
                     "description": "Dialogue: A line of dialogue. The key must be a character name."
                 }
