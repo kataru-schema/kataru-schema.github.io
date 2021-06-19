@@ -119,20 +119,18 @@
             "properties": {
                 "choices": {
                     "type": "object",
-                    "properties": {
-                        "...": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The default option. This will be automatically be entered on timeout."
-                        }
-                    },
                     "patternProperties": {
                         "^(?:el)?if .+": {
                             "type": "object",
                             "additionalProperties": {
-                                "type": "string",
+                                "type": [
+                                    "null",
+                                    "string",
+                                    "array"
+                                ],
+                                "items": {
+                                    "$ref": "#/definitions/line"
+                                },
                                 "description": "Choice: a choice mapping to a passage name."
                             },
                             "description": "Conditional choice: A choice available only if a condition is met."
@@ -140,9 +138,13 @@
                     },
                     "additionalProperties": {
                         "type": [
+                            "null",
                             "string",
-                            "null"
+                            "array"
                         ],
+                        "items": {
+                            "$ref": "#/definitions/line"
+                        },
                         "description": "Choice: a choice mapping to a passage name. If null, takes the next passage."
                     },
                     "description": "Choices: a map of choices that the player can make. Each choice must map to a passage name."
